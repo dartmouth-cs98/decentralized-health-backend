@@ -1,23 +1,84 @@
 
-# Decentralized Health - Back end 
+# Decentralized Health Backend
 
-The back end shall create a data management system that will help store patient information and then help write said information to the blockchain. 
-
+The backend uses a postgresql database and a node.js API to store and serve data, such as account information and UI files, to the frontend.
 
 ## Architecture
 
-We shall use Postgressql and a node.js database in order to store our data and then write said data to the blockchain. we have decided to use postgress as it is an opensource data management system that allows for integreations with blockchain apis. 
+The backend implements a Postgresql database and a node.js api. Postgresql is a simple and effective way to quickly boot up and an SQL server on any machine, and node.js keeps the use of javascript consistent throughout the project. Additionally, node.js has helpful API creation libraries such as express.
 
 ## Setup
-Download postgressql here: https://www.postgresql.org/download/. after downloading the site will provide steps to continue and intialize your own server. 
 
+To setup the backend on your machine, follow the relevant set of instructions below:
+
+### Mac OSX
+We will use the homebrew tool to install and run our postgresql database. To check if homebrew is installed, use the following command.
+
+    brew
+
+If homebrew is not installed, install it with the following command.
+
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+Next, install postgresql using the following command.
+
+    brew install postgresql
+
+Now, boot up postgresql.
+
+    brew services start postgresql
+
+Now, we need to get our node.JS enviorment up and running. First, check if node.js is installed.
+
+    node -v
+
+If not, run the following homebrew command to install it.
+
+    brew install node
+
+Next, install the required packages.
+
+    npm install pg pgtools express
+
+Now, make sure you are in the directory containing the setup_db.js file. Run the following command.
+
+    node setup_db.js
+
+Once this is complete, it's time to setup the API. Run the following command.
+
+    node api/index.js
+
+To ensure that the API & database are working, go to a web browser and navigate to the following location.
+
+    http://localhost:3000/hello
+
+You should see the message "hello world". Now, it's time to shut things down. To stop the api, simply terminate the node command with `control-c`. To stop the database, simply run the following command.
+
+    brew services stop postgresql
 
 ## Deployment
+To deploy the backend on your machine, follow the relevant set of instructions below:
 
-TODO: how to deploy the project
+### Mac OSX
+Let's boot up our previously set up API and database. To boot up the database, run to following command.
+
+    brew services start postgresql
+
+To boot up the api, run the following command.
+
+    node api/index.js
+
+Once you are done working with the API and database, terminate the node command with `control-c`. To stop the database, simply run the following command.
+
+    brew services stop postgresql
 
 ## Authors
 
-TODO: list of authors
+Scott Crawshaw  
+Tanvir Islam
 
 ## Acknowledgments
+The following resources were consulted where cited.  
+https://blog.logrocket.com/nodejs-expressjs-postgresql-crud-rest-api-example/  
+https://kb.objectrocket.com/postgresql/how-to-create-a-postgres-database-with-nodejs-844  
+https://dirask.com/posts/Node-js-PostgreSQL-Create-table-if-not-exists-DZXJNj
