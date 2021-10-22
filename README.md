@@ -42,7 +42,7 @@ Next, install the required packages.
 
 Now, make sure you are in the directory containing the setup_db.js file. Run the following command.
 
-    node setup_db.js
+    node database/setup_db.js
 
 Once this is complete, it's time to setup the API. Run the following command.
 
