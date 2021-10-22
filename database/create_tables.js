@@ -1,5 +1,5 @@
+// Scott Crawshaw '22
 // Code from https://dirask.com/posts/Node-js-PostgreSQL-Create-table-if-not-exists-DZXJNj and https://www.postgresqltutorial.com/postgresql-serial/
-// Hello world test table created in setup_db.js
 
 var pgtools = require("pgtools");
 const { Client } = require('pg');
@@ -12,6 +12,7 @@ const client = new Client({
 
 client.connect();
 
+// SQL commands that will be run
 const create_hello = `DROP TABLE IF EXISTS hello_world; CREATE TABLE hello_world (message TEXT);`
 const insert_hello = `INSERT INTO hello_world VALUES ('hello world');`
 const create_users = `DROP TABLE IF EXISTS users; CREATE TABLE users (id SERIAL PRIMARY KEY, name TEXT NOT NULL, email TEXT NOT NULL, password_hash TEXT NOT NULL, is_admin BOOLEAN NOT NULL);`
@@ -28,6 +29,7 @@ const execute = async (query) => {
     }
 };
 
+// hello_world table
 execute(create_hello).then(result => {
     if (result) {
         console.log('hello_world table created.');
@@ -40,6 +42,7 @@ execute(create_hello).then(result => {
     });
 });
 
+// users table
 execute(create_users).then(result => {
     if (result) {
         console.log('users table created.');
