@@ -8,6 +8,18 @@ See the schema design below. The hello_world table exists solely for testing pur
   
 ![Gif](database_schema.png)
 
+## Test User
+The test user's information can be found below:  
+Name: John Smith  
+Email: johnsmithcs98health@gmail.com  
+Password: password  
+Is_Admin: False  
+  
+  
+The login information for the test user's gmail account is:  
+Email: johnsmithcs98health@gmail.com  
+Password: cs98health!
+
 ## Example Commands
 TODO
 
