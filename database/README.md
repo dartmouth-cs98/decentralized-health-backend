@@ -21,7 +21,24 @@ Email: johnsmithcs98health@gmail.com
 Password: cs98health!
 
 ## Example Commands
-TODO
+Replace the question mark with the relevant data. Be sure to prevent SQL injection and to properly hash passwords.
+
+### Validating Log In
+Will return nothing if email & password is incorrect, or user data if it is correct.  
+`SELECT * FROM users WHERE email=? and password_hash=?;`
+
+### Getting User Info by ID
+`SELECT * FROM users WHERE id=?;`
+
+### Creating User
+Order of fields: id, name, email, password_hash, is_admin  
+`INSERT INTO users VALUES (DEFAULT, ?, ?, ?, ?);`
+
+### Changing User Info
+`UPDATE users SET ?=? WHERE id=?;`
+
+### Removing User
+`DELETE FROM users WHERE id=?;`
 
 ## Author
 Scott Crawshaw '22
