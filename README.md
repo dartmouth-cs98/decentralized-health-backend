@@ -40,19 +40,20 @@ Next, install the required packages.
 
     npm install pg pgtools express
 
-Now, make sure you are in the directory containing the setup_db.js file. Run the following command.
+Now, make sure you are in the directory containing the setup_db.js file. Run the following commands.
 
-    node setup_db.js
+    node database/setup_db.js
+    node database/create_tables.js
 
 Once this is complete, it's time to setup the API. Run the following command.
 
     node api/index.js
 
-To ensure that the API & database are working, go to a web browser and navigate to the following location.
+To ensure that the API & database are working, go to a web browser and navigate to the following location. You should see the message "hello world".
 
     http://localhost:3000/hello
 
-You should see the message "hello world". Now, it's time to shut things down. To stop the api, simply terminate the node command with `control-c`. To stop the database, simply run the following command.
+Now, it's time to shut things down. To stop the api, simply terminate the node command with `control-c`. To stop the database, simply run the following command.
 
     brew services stop postgresql
 
@@ -64,9 +65,17 @@ Let's boot up our previously set up API and database. To boot up the database, r
 
     brew services start postgresql
 
-To boot up the api, run the following command.
+**Optional:** If you would like to wipe the local database and start fresh, run the following command.
+
+    node database/create_tables.js
+
+Now, to boot up the api, run the following command.
 
     node api/index.js
+
+To ensure that the API & database are working, go to a web browser and navigate to the following location. You should see the message "hello world".
+
+    http://localhost:3000/hello
 
 Once you are done working with the API and database, terminate the node command with `control-c`. To stop the database, simply run the following command.
 
@@ -81,4 +90,5 @@ Tanvir Islam
 The following resources were consulted where cited.  
 https://blog.logrocket.com/nodejs-expressjs-postgresql-crud-rest-api-example/  
 https://kb.objectrocket.com/postgresql/how-to-create-a-postgres-database-with-nodejs-844  
-https://dirask.com/posts/Node-js-PostgreSQL-Create-table-if-not-exists-DZXJNj
+https://dirask.com/posts/Node-js-PostgreSQL-Create-table-if-not-exists-DZXJNj  
+https://www.postgresqltutorial.com/postgresql-serial/
