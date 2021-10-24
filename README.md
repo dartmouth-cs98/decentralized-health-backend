@@ -38,7 +38,7 @@ If not, run the following homebrew command to install it.
 
 Next, install the required packages.
 
-    npm install pg pgtools express
+    npm install pg pgtools express password-hash
 
 Now, make sure you are in the directory containing the setup_db.js file. Run the following commands.
 
@@ -91,4 +91,5 @@ The following resources were consulted where cited.
 https://blog.logrocket.com/nodejs-expressjs-postgresql-crud-rest-api-example/  
 https://kb.objectrocket.com/postgresql/how-to-create-a-postgres-database-with-nodejs-844  
 https://dirask.com/posts/Node-js-PostgreSQL-Create-table-if-not-exists-DZXJNj  
-https://www.postgresqltutorial.com/postgresql-serial/
+https://www.postgresqltutorial.com/postgresql-serial/  
+https://www.npmjs.com/package/password-hash

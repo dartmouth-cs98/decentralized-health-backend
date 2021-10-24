@@ -17,10 +17,17 @@ app.get('/', (request, response) => {
     response.json({ info: 'Node.js, Express, and Postgres API' })
 })
 
+
 app.listen(port, () => {
     console.log(`App running on port ${port}.`)
 })
 
 const db = require('./queries')
 
+// Endpoints
 app.get('/hello', db.getHelloWorld)
+app.get('/users/:id', db.getUserById)
+app.get('/users/:email/:password', db.validateLogin)
+app.post('/users', db.createUser)
+app.put('/users/:id', db.updateUser)
+app.delete('/users/:id', db.deleteUser)

@@ -35,7 +35,7 @@ Order of fields: id, name, email, password_hash, is_admin
 `INSERT INTO users VALUES (DEFAULT, ?, ?, ?, ?);`
 
 ### Changing User Info
-`UPDATE users SET ?=? WHERE id=?;`
+`UPDATE users SET name = ?, email = ?, password_hash = ?, is_admin = ? WHERE id = ?;`
 
 ### Removing User
 `DELETE FROM users WHERE id=?;`
