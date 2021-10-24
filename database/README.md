@@ -24,8 +24,8 @@ Password: cs98health!
 Replace the question mark with the relevant data. Be sure to prevent SQL injection and to properly hash passwords.
 
 ### Validating Log In
-Will return nothing if email & password is incorrect, or user data if it is correct.  
-`SELECT * FROM users WHERE email=? and password_hash=?;`
+Get the password hash to verify with hashing library.  
+`SELECT password_hash FROM users WHERE email=?;`
 
 ### Getting User Info by ID
 `SELECT * FROM users WHERE id=?;`
