@@ -101,5 +101,37 @@ const deleteUser = (request, response) => {
     response.status(200).send(`User deleted with ID: ${id}`)
   })
 }
+// deletes a users current admin 
+const deleteAdmin = (request, response) => {
+  const id = parseInt(request.params.id)
+  const { admin } = request.body
+  pool.query( 'DELETE FROM users SET id = $2, is_admin = $1',
+    [ admin, id],
+    (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(200).send(`User modified with ID: ${id}`)
+    })
+}
 
-module.exports = {getHelloWorld, validateLogin, getUserById, createUser, updateUser, deleteUser}
+//updates a users admin 
+const updateAdmin = (request, response) => {
+  const id = parseInt(request.params.id)
+  const {admin} = request.body
+  const hashedPassword = passwordHash.generate(password);
+
+  pool.query(
+    'UPDATE users SET is_admin = $1 WHERE id = $2',
+    [admin, id],
+    (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(200).send(`User modified with ID: ${id}`)
+    }
+  )
+}
+
+
+module.exports = {getHelloWorld, validateLogin, getUserById, createUser, updateUser, deleteUser, deleteAdmin, updateAdmin}
