@@ -60,6 +60,11 @@ Now, it's time to shut things down. To stop the api, simply terminate the node c
 ## Deployment
 To deploy the backend on your machine, follow the relevant set of instructions below:
 
+### Windows 
+This Youtube video gives a great step by step procedure for windows setup
+
+https://www.youtube.com/watch?v=BLH3s5eTL4Y&t=245s
+
 ### Mac OSX
 Let's boot up our previously set up API and database. To boot up the database, run to following command.
 
