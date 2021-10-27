@@ -11,12 +11,6 @@ The backend implements a Postgresql database and a node.js api. Postgresql is a 
 
 To setup the backend on your machine, follow the relevant set of instructions below:
 
-### Windows
-follow this video tutorial:
-https://www.youtube.com/watch?v=BLH3s5eTL4Y&t=245s
--essentially go to postgresql website and hit download 
-
-
 ### Mac OSX
 We will use the homebrew tool to install and run our postgresql database. To check if homebrew is installed, use the following command.
 
@@ -62,12 +56,14 @@ To ensure that the API & database are working, go to a web browser and navigate 
 Now, it's time to shut things down. To stop the api, simply terminate the node command with `control-c`. To stop the database, simply run the following command.
 
     brew services stop postgresql
+    
+### Windows
+Follow this video tutorial for further instructions:  
+https://www.youtube.com/watch?v=BLH3s5eTL4Y&t=245s.
+Essentially, just go to postgresql website and hit download.
 
 ## Deployment
 To deploy the backend on your machine, follow the relevant set of instructions below:
-
-### Windows 
-The above video shows how to adress this 
 
 ### Mac OSX
 Let's boot up our previously set up API and database. To boot up the database, run to following command.
@@ -89,6 +85,10 @@ To ensure that the API & database are working, go to a web browser and navigate 
 Once you are done working with the API and database, terminate the node command with `control-c`. To stop the database, simply run the following command.
 
     brew services stop postgresql
+    
+### Windows 
+Follow this video tutorial for further instructions:  
+https://www.youtube.com/watch?v=BLH3s5eTL4Y&t=245s.
 
 ## Authors
 
