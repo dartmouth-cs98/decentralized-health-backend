@@ -51,7 +51,7 @@ Once this is complete, it's time to setup the API. Run the following command.
 
 To ensure that the API & database are working, go to a web browser and navigate to the following location. You should see the message "hello world".
 
-    http://localhost:3000/hello
+    http://localhost:3838/hello
 
 Now, it's time to shut things down. To stop the api, simply terminate the node command with `control-c`. To stop the database, simply run the following command.
 
@@ -75,7 +75,7 @@ Now, to boot up the api, run the following command.
 
 To ensure that the API & database are working, go to a web browser and navigate to the following location. You should see the message "hello world".
 
-    http://localhost:3000/hello
+    http://localhost:3838/hello
 
 Once you are done working with the API and database, terminate the node command with `control-c`. To stop the database, simply run the following command.
 
