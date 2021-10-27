@@ -59,7 +59,7 @@ Now, it's time to shut things down. To stop the api, simply terminate the node c
     
 ### Windows
 Follow this video tutorial for further instructions:  
-https://www.youtube.com/watch?v=BLH3s5eTL4Y&t=245s.
+https://www.youtube.com/watch?v=BLH3s5eTL4Y&t=245s.  
 Essentially, just go to postgresql website and hit download.
 
 ## Deployment
