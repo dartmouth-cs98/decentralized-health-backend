@@ -62,10 +62,10 @@ const getUserById = (request, response) => {
 
 // Creates a new user. Needs name, email, password, and admin fields.
 const createUser = (request, response) => {
-    const { name, email, password, admin, bloodType } = request.body
+    const { name, email, password, admin, bloodType, allergies } = request.body
     const hashedPassword = passwordHash.generate(password);
     
-    pool.query('INSERT INTO users (name, email, password_hash, is_admin, bloodType) VALUES ($1, $2, $3, $4, $5) RETURNING id', [name, email, hashedPassword, admin, bloodType], (error, results) => {
+    pool.query('INSERT INTO users (name, email, password_hash, is_admin, bloodType, allergies) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id', [name, email, hashedPassword, admin, bloodType, allergies], (error, results) => {
       if (error) {
         throw error
       }
@@ -80,8 +80,8 @@ const updateUser = (request, response) => {
     const hashedPassword = passwordHash.generate(password);
   
     pool.query(
-      'UPDATE users SET name = $1, email = $2, password_hash = $3, is_admin = $4, bloodType =$5 WHERE id = $6',
-      [name, email, hashedPassword, admin, bloodType, id],
+      'UPDATE users SET name = $1, email = $2, password_hash = $3, is_admin = $4, bloodType =$5, allergies = $6 WHERE id = $7',
+      [name, email, hashedPassword, admin, bloodType, allergies, id],
       (error, results) => {
         if (error) {
           throw error
@@ -133,7 +133,7 @@ const updateAdmin = (request, response) => {
     }
   )
 }
-// deletes a users current admin 
+// deletes a users current bloodtype 
 const deleteBloodType = (request, response) => {
   const id = parseInt(request.params.id)
   const { bloodType } = request.body
@@ -146,6 +146,7 @@ const deleteBloodType = (request, response) => {
       response.status(200).send(`User modified with ID: ${bloodType}`)
     })
 }
+// updates a users bloodtype 
 const updateBloodType = (request, response) => {
   const id = parseInt(request.params.id)
   const {bloodType} = request.body
@@ -162,5 +163,34 @@ const updateBloodType = (request, response) => {
     }
   )
 }
+const deleteAllergies = (request, response) => {
+  const id = parseInt(request.params.id)
+  const { allergies} = request.body
+  pool.query( 'DELETE FROM users SET id = $2, allergies = $1',
+    [ allergies, id],
+    (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(200).send(`User modified with ID: ${allergies}`)
+    })
+}
+// updates a users bloodtype 
+const updateAllergies = (request, response) => {
+  const id = parseInt(request.params.id)
+  const {allergies} = request.body
+  const hashedPassword = passwordHash.generate(password);
 
-module.exports = {getHelloWorld, validateLogin, getUserById, createUser, updateUser, deleteUser, deleteAdmin, updateAdmin,deleteBloodType, updateBloodType}
+  pool.query(
+    'UPDATE users SET allergies = $1 WHERE id = $2',
+    [allergies, id],
+    (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(200).send(`User modified with ID: ${bloodType}`)
+    }
+  )
+}
+
+module.exports = {getHelloWorld, validateLogin, getUserById, createUser, updateUser, deleteUser, deleteAdmin, updateAdmin,deleteBloodType, updateBloodType, deleteAllergies, updateAllergies}
