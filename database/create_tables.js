@@ -6,6 +6,7 @@ dotenv.config({silent: true});
 var passwordHash = require('password-hash');
 const { Client } = require('pg');
 
+const isProduction = process.env.NODE_ENV === 'production';
 const client = new Client(
     {
         user: process.env.PGUSER,
@@ -13,6 +14,7 @@ const client = new Client(
         database: process.env.PGDATABASE,
         password: process.env.PGPASSWORD,
         port: process.env.PGPORT,
+        ssl: isProduction
     }
 );
 
