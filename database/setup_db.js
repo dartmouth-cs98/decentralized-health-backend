@@ -1,5 +1,6 @@
 // Scott Crawshaw '22
 // Code from https://kb.objectrocket.com/postgresql/how-to-create-a-postgres-database-with-nodejs-844
+console.log('starting setup')
 
 var pgtools = require("pgtools");
 const dotenv = require('dotenv');
@@ -13,10 +14,12 @@ const connectionString = `postgresql://${process.env.PGUSER}:${process.env.PGPAS
 const configString = isProduction ? process.env.DATABASE_URL : connectionString
 
 // create database named health_db
-pgtools.createdb(configString, "health_db", function(err, res) {
+pgtools.createdb(configString, process.env.PGDATABASE, function(err, res) {
   if (err) {
     console.error(err);
     process.exit(-1);
   }
   console.log(res);
 });
+
+console.log('finished setup')

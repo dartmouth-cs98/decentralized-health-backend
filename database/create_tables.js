@@ -1,6 +1,7 @@
 // Scott Crawshaw '22
 // Code from https://dirask.com/posts/Node-js-PostgreSQL-Create-table-if-not-exists-DZXJNj and https://www.postgresqltutorial.com/postgresql-serial/
 
+console.log('starting create')
 const dotenv = require('dotenv');
 dotenv.config({silent: true});
 var passwordHash = require('password-hash');
@@ -86,3 +87,5 @@ execute(create_users).then(result => {
         client.end()
     });
 });
+
+console.log('finished create');
