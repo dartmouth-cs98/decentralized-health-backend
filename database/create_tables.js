@@ -18,7 +18,11 @@ const client = new Client(
     }
 );
 
-client.connect();
+try {
+    client.connect();
+} catch (error) {
+    console.log(`client failed to connect with error: ${error}`)
+}
 
 // SQL commands that will be run
 const create_user = `CREATE ROLE ${process.env.PGUSER} WITH LOGIN PASSWORD '${process.env.PGPASSWORD}';`
