@@ -45,19 +45,19 @@ const execute = async (query) => {
 };
 
 // make db user
-execute(create_user).then(result => {
-    if (result) {
-        console.log('db user created');
-    }
+// execute(create_user).then(result => {
+//     if (result) {
+//         console.log('db user created');
+//     }
 
-    execute(give_role).then(result => {
-        if (result) {
-            console.log('user given db permission');
-        }
-    });
-}).catch(error => {
-    console.log(`error creating user for db: ${error}`)
-});
+//     execute(give_role).then(result => {
+//         if (result) {
+//             console.log('user given db permission');
+//         }
+//     });
+// }).catch(error => {
+//     console.log(`error creating user for db: ${error}`)
+// });
 
 // hello_world table
 execute(create_hello).then(result => {
