@@ -53,16 +53,16 @@ const getUserById = (request, response) => {
     })
 }
 
-// Creates a new user. Needs name, email, password, and admin fields.
+// Creates a new user. Needs name, email, password, and admin fields..
 const createUser = (request, response) => {
-    const { name, email, password, admin } = request.body
+    const { name, email, password, isAdmin } = request.body
     const hashedPassword = passwordHash.generate(password);
     
-    pool.query('INSERT INTO users (name, email, password_hash, is_admin) VALUES ($1, $2, $3, $4) RETURNING id', [name, email, hashedPassword, admin], (error, results) => {
+    pool.query('INSERT INTO users (name, email, password_hash, is_admin) VALUES ($1, $2, $3, $4) RETURNING id', [name, email, hashedPassword, isAdmin], (error, results) => {
       if (error) {
         throw error
       }
-      response.status(201).send(`User added with ID: ${results.rows[0].id}`)
+      response.status(201).send(`${results.rows[0].id}`)
     })
 }
 
@@ -79,7 +79,7 @@ const updateUser = (request, response) => {
         if (error) {
           throw error
         }
-        response.status(200).send(`User modified with ID: ${id}`)
+        response.status(200).send(`${id}`)
       }
     )
 }
