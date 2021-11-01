@@ -21,6 +21,8 @@ const client = new Client(
 client.connect();
 
 // SQL commands that will be run
+const create_user = `CREATE ROLE ${process.env.PGUSER} WITH LOGIN PASSWORD '${process.env.PGPASSWORD}';`
+const give_role = `ALTER ROLE ${process.env.PGUSER} CREATEDB;`
 const create_hello = `DROP TABLE IF EXISTS hello_world; CREATE TABLE hello_world (message TEXT);`
 const insert_hello = `INSERT INTO hello_world VALUES ('hello world');`
 const create_users = `DROP TABLE IF EXISTS users; CREATE TABLE users (id SERIAL PRIMARY KEY, name TEXT NOT NULL, email TEXT NOT NULL UNIQUE, password_hash TEXT NOT NULL, is_admin BOOLEAN NOT NULL);`
@@ -36,6 +38,21 @@ const execute = async (query) => {
         return false;
     }
 };
+
+// make db user
+execute(create_user).then(result => {
+    if (result) {
+        console.log('db user created');
+    }
+
+    execute(give_role).then(result => {
+        if (result) {
+            console.log('user given db permission');
+        }
+    });
+}).catch(error => {
+    console.log(`error creating user for db: ${error}`)
+});
 
 // hello_world table
 execute(create_hello).then(result => {
