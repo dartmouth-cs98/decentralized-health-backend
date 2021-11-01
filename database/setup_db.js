@@ -17,7 +17,7 @@ const configString = isProduction ? process.env.DATABASE_URL : connectionString
 // what is this???? -> parse url?
 console.log(`PG DATABASE IS: ${process.env.PGDATABASE}`)
 console.log(`DATABASE_URL IS: ${process.env.DATABASE_URL}`)
-pgtools.createdb(configString, 'health_db', function(err, res) {
+pgtools.createdb(configString, process.env.PGDATABASE, function(err, res) {
   if (err) {
     console.error(err);
     process.exit(-1);
