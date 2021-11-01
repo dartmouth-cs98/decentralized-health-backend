@@ -33,4 +33,7 @@ app.put('/users/:id', db.updateUser)
 app.delete('/users/:id', db.deleteUser)
 app.delete('/users/:id', db.deleteAdmin)
 app.put('/users/:id', db.updateAdmin)
+app.delete('/users/:id', db.deleteBloodType)
+app.put('/users/:id', db.updateBloodType)
+
 
