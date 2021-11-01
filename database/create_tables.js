@@ -14,7 +14,7 @@ const client = new Client(
         database: process.env.PGDATABASE,
         password: process.env.PGPASSWORD,
         port: process.env.PGPORT,
-        ssl: isProduction
+        ssl: isProduction? { rejectUnauthorized: false }: false
     }
 );
 
