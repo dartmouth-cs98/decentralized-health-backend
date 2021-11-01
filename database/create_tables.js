@@ -48,6 +48,8 @@ execute(create_hello).then(result => {
             console.log('Test message added to hello_world table.');
         }
     });
+}).catch(error => {
+    console.log(`error creating hello_world table: ${error}`)
 });
 
 // users table
