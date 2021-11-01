@@ -1,14 +1,20 @@
 // Scott Crawshaw '22
 // Code from https://dirask.com/posts/Node-js-PostgreSQL-Create-table-if-not-exists-DZXJNj and https://www.postgresqltutorial.com/postgresql-serial/
 
+const dotenv = require('dotenv');
+dotenv.config({silent: true});
 var passwordHash = require('password-hash');
 const { Client } = require('pg');
 
-const client = new Client({
-    host: "localhost",
-    port: 5432,
-    database: "health_db"
-});
+const client = new Client(
+    {
+        user: process.env.PGUSER,
+        host: process.env.PGHOST,
+        database: process.env.PGDATABASE,
+        password: process.env.PGPASSWORD,
+        port: process.env.PGPORT,
+    }
+);
 
 client.connect();
 

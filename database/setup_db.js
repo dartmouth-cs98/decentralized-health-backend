@@ -2,14 +2,18 @@
 // Code from https://kb.objectrocket.com/postgresql/how-to-create-a-postgres-database-with-nodejs-844
 
 var pgtools = require("pgtools");
+const dotenv = require('dotenv');
 
-const db_config = {
-    host: "localhost",
-    port: 5432
-};
+dotenv.config({silent: true});
+
+const isProduction = process.env.NODE_ENV === 'production';
+
+const connectionString = `postgresql://${process.env.PGUSER}:${process.env.PGPASSWORD}@${process.env.PGHOST}:${process.env.PGPORT}/${process.env.PGDATABASE}`;
+
+const configString = isProduction ? process.env.DATABASE_URL : connectionString
 
 // create database named health_db
-pgtools.createdb(db_config, "health_db", function(err, res) {
+pgtools.createdb(configString, "health_db", function(err, res) {
   if (err) {
     console.error(err);
     process.exit(-1);
