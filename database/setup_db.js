@@ -14,7 +14,10 @@ const connectionString = `postgresql://${process.env.PGUSER}:${process.env.PGPAS
 const configString = isProduction ? process.env.DATABASE_URL : connectionString
 
 // create database named health_db
-pgtools.createdb(configString, process.env.PGDATABASE, function(err, res) {
+// what is this???? -> parse url?
+console.log(`PG DATABASE IS: ${process.env.PGDATABASE}`)
+console.log(`DATABASE_URL IS: ${process.env.DATABASE_URL}`)
+pgtools.createdb(configString, 'health_db', function(err, res) {
   if (err) {
     console.error(err);
     process.exit(-1);
