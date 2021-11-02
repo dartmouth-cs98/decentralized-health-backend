@@ -3,6 +3,9 @@
 ## Purpose
 The API provides a connection between the frontend and the database. It contains functions that can be employed to write, read, update, and delete data from the database.
 
+## Authentication
+Authentication is performed using a bearer token. When a user logs in or creates an account, a token is issued. This token is stored on the client side and included in requests to the API. This token is only valid for making requests that pertain to the correct user. The token expires after 48 hours, at which point the user must log in again. The tokens themselves are generated via the `crypto` library, but the authentication procedures are coded from scratch, and do not make use of any libraries.
+
 ## Endpoints
 If the API is running on your local machine, all endpoints will likely exist at http://localhost:3838.
 
