@@ -102,6 +102,7 @@ const deleteUser = (request, response) => {
   })
 }
 // deletes a users current admin 
+// not in use, overrides an endpoint and is bad sql, see index.js
 const deleteAdmin = (request, response) => {
   const id = parseInt(request.params.id)
   const { admin } = request.body
@@ -115,7 +116,8 @@ const deleteAdmin = (request, response) => {
     })
 }
 
-//updates a users admin 
+// updates a users admin 
+// not in use, overrides an endpoint, see index.js
 const updateAdmin = (request, response) => {
   const id = parseInt(request.params.id)
   const {admin} = request.body
