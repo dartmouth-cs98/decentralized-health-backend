@@ -27,7 +27,7 @@ const db = require('./queries')
 // Endpoints
 app.get('/hello', db.getHelloWorld)
 app.get('/users/:token/:id', db.getUserById)
-app.get('/users/:email/:password', db.validateLogin)
+app.get('/users/login/:email/:password', db.validateLogin)
 app.post('/users', db.createUser)
 app.put('/users/:token/:id', db.updateUser)
 app.delete('/users/:token/:id', db.deleteUser)

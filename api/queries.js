@@ -23,6 +23,7 @@ function authenticate(token, id, callback) {
   })
 }
 
+
 const getHelloWorld = (request, response) => {
     pool.query('SELECT * FROM hello_world', (error, results) => {
         if (error) {
@@ -48,6 +49,11 @@ const validateLogin = (request, response) => {
               throw error
             }
             const token = crypto.randomBytes(64).toString('hex')
+            pool.query('INSERT INTO auth (token, id) VALUES ($1, $2)', [token, results.rows[0]["id"]], (error, results) => {
+              if (error) {
+                throw error
+              }
+            })
             var json = results.rows
             json[0]["token"] = token
             response.status(200).json(json)
@@ -113,32 +119,54 @@ const createUser = (request, response) => {
 // Updates a user. Needs name, email, password, and admin fields.
 const updateUser = (request, response) => {
     const id = parseInt(request.params.id)
+    const token = request.params.token
     const {name, email, password, admin} = request.body
     const hashedPassword = passwordHash.generate(password);
   
-    pool.query(
-      'UPDATE users SET name = $1, email = $2, password_hash = $3, is_admin = $4 WHERE id = $5',
-      [name, email, hashedPassword, admin, id],
-      (error, results) => {
-        if (error) {
-          throw error
-        }
-        response.status(200).send(`User modified with ID: ${id}`)
+    const callback = (authenticated) => {
+      if (!authenticated){
+        response.status(401).send("401 Unauthorized")
       }
-    )
+      else {
+        pool.query(
+          'UPDATE users SET name = $1, email = $2, password_hash = $3, is_admin = $4 WHERE id = $5',
+          [name, email, hashedPassword, admin, id],
+          (error, results) => {
+            if (error) {
+              throw error
+            }
+            response.status(200).send(`User modified with ID: ${id}`)
+          }
+        )
+      }
+    }
+
+    authenticate(token, id, callback)
 }
 
 // Deletes a user given id number
 const deleteUser = (request, response) => {
   const id = parseInt(request.params.id)
+  const token = request.params.token
 
-  pool.query('DELETE FROM users WHERE id = $1', [id], (error, results) => {
-    if (error) {
-      throw error
+  const callback = (authenticated) => {
+    if (!authenticated){
+      response.status(401).send("401 Unauthorized")
     }
-    response.status(200).send(`User deleted with ID: ${id}`)
-  })
+    else {
+      pool.query('DELETE FROM users WHERE id = $1', [id], (error, results) => {
+        if (error) {
+          throw error
+        }
+        response.status(200).send(`User deleted with ID: ${id}`)
+      })
+    }
+  }
+
+  authenticate(token, id, callback)
 }
+
+/*
 // deletes a users current admin 
 // not in use, overrides an endpoint and is bad sql, see index.js
 const deleteAdmin = (request, response) => {
@@ -171,7 +199,6 @@ const updateAdmin = (request, response) => {
       response.status(200).send(`User modified with ID: ${id}`)
     }
   )
-}
+}*/
 
-
-module.exports = {getHelloWorld, validateLogin, getUserById, createUser, updateUser, deleteUser, deleteAdmin, updateAdmin}
+module.exports = {getHelloWorld, validateLogin, getUserById, createUser, updateUser, deleteUser}
