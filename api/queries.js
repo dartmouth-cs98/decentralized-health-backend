@@ -9,6 +9,19 @@ const pool = new Pool({
 })
 
 var passwordHash = require('password-hash');
+var crypto = require('crypto');
+
+
+function authenticate(token, id, callback) {
+  pool.query('SELECT count(*) FROM auth WHERE token=$1 AND id=$2 AND timestamp > NOW();', [token, id], (error, results) => {
+    if (error || parseInt(results.rows[0]["count"]) == 0) {
+      callback(false)
+    }
+    else {
+      callback(true)
+    }
+  })
+}
 
 const getHelloWorld = (request, response) => {
     pool.query('SELECT * FROM hello_world', (error, results) => {
@@ -34,7 +47,10 @@ const validateLogin = (request, response) => {
             if (error) {
               throw error
             }
-            response.status(200).json(results.rows)
+            const token = crypto.randomBytes(64).toString('hex')
+            var json = results.rows
+            json[0]["token"] = token
+            response.status(200).json(json)
           })
         }
         else{
@@ -50,16 +66,28 @@ const validateLogin = (request, response) => {
 // Returns user info given id number
 const getUserById = (request, response) => {
     const id = parseInt(request.params.id)
-  
-    pool.query('SELECT * FROM users WHERE id = $1', [id], (error, results) => {
-      if (error) {
-        throw error
+    const token = request.params.token
+
+    const callback = (authenticated) => {
+      if (!authenticated){
+        response.status(401).send("401 Unauthorized")
       }
-      response.status(200).json(results.rows)
-    })
+      else {
+        pool.query('SELECT * FROM users WHERE id = $1', [id], (error, results) => {
+          if (error) {
+            throw error
+          }
+          response.status(200).json(results.rows)
+        })
+      }
+    }
+
+    authenticate(token, id, callback)
+      
+      
 }
 
-// Creates a new user. Needs name, email, password, and admin fields.
+// Creates a new user. Needs name, email, password, and admin fields. Returns id and token.
 const createUser = (request, response) => {
     const { name, email, password, admin } = request.body
     const hashedPassword = passwordHash.generate(password);
@@ -68,7 +96,17 @@ const createUser = (request, response) => {
       if (error) {
         throw error
       }
-      response.status(201).send(`User added with ID: ${results.rows[0].id}`)
+      const id = results.rows[0].id
+      const token = crypto.randomBytes(64).toString('hex')
+      pool.query('INSERT INTO auth (token, id) VALUES ($1, $2)', [token, id], (error, results) => {
+        if (error) {
+          throw error
+        }
+        json = {}
+        json['id'] = id
+        json['token'] = token
+        response.status(201).send(json)
+      })
     })
 }
 
