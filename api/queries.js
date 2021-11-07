@@ -166,6 +166,28 @@ const deleteUser = (request, response) => {
   authenticate(token, id, callback)
 }
 
+// Sign out
+const signOut = (request, response) => {
+  const id = parseInt(request.params.id)
+  const token = request.params.token
+
+  const callback = (authenticated) => {
+    if (!authenticated){
+      response.status(401).send("401 Unauthorized")
+    }
+    else {
+      pool.query('DELETE FROM auth WHERE token = $1', [token], (error, results) => {
+        if (error) {
+          throw error
+        }
+        response.status(200).send(`User signed out with ID: ${id}`)
+      })
+    }
+  }
+
+  authenticate(token, id, callback)
+}
+
 /*
 // deletes a users current admin 
 // not in use, overrides an endpoint and is bad sql, see index.js
@@ -201,4 +223,4 @@ const updateAdmin = (request, response) => {
   )
 }*/
 
-module.exports = {getHelloWorld, validateLogin, getUserById, createUser, updateUser, deleteUser}
+module.exports = {getHelloWorld, validateLogin, getUserById, createUser, updateUser, deleteUser, signOut}
