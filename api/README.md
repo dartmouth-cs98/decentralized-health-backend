@@ -30,5 +30,8 @@ The `/users/:token/:id` PUT endpoint will update user information. The following
 ### Delete User
 The `/users/:token/:id` DELETE endpoint will delete a given user based on ID. Example: `curl -X "DELETE" http://localhost:3838/users/8d50a388f44915f44dda067276722595f885aacc01e26d4eb3f7495a8d477a4d787bd4277ab46fb31cb0db4837ca8da1de8987ad03dc158709036e6fd1c84aa9/1`
 
+### Sign Out
+The `/users/login/:token/:id` DELETE endpoint will sign out a user by deleting the provided token from the auth table. Example: `curl -X "DELETE" http://localhost:3838/users/login/8d50a388f44915f44dda067276722595f885aacc01e26d4eb3f7495a8d477a4d787bd4277ab46fb31cb0db4837ca8da1de8987ad03dc158709036e6fd1c84aa9/1`
+
 ## Author
 Scott Crawshaw '22
