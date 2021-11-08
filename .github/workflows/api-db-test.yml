@@ -1,5 +1,5 @@
 name: API & Database Testing Action
-on: [push, pull-request]
+on: [push, pull_request]
 jobs:
   Explore-GitHub-Actions:
     runs-on: macos-latest
