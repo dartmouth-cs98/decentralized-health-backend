@@ -23,6 +23,17 @@ function authenticate(token, id, callback) {
   })
 }
 
+function authenticate_any(token, callback) {
+  pool.query('SELECT count(*) FROM auth WHERE token=$1 AND timestamp > NOW();', [token], (error, results) => {
+    if (error || parseInt(results.rows[0]["count"]) == 0) {
+      callback(false)
+    }
+    else {
+      callback(true)
+    }
+  })
+}
+
 
 const getHelloWorld = (request, response) => {
     pool.query('SELECT * FROM hello_world', (error, results) => {
@@ -32,6 +43,29 @@ const getHelloWorld = (request, response) => {
         response.status(200).json(results.rows[0]["message"])
     })
 }
+
+// Returns eth address given email. Any valid token works
+const getETH = (request, response) => {
+  const email = request.params.email
+  const token = request.params.token
+
+  const callback = (authenticated) => {
+    if (!authenticated){
+      response.status(401).send("401 Unauthorized")
+    }
+    else {
+      pool.query('SELECT eth_address FROM users WHERE email = $1', [email], (error, results) => {
+        if (error) {
+          throw error
+        }
+        response.status(200).json(results.rows)
+      })
+    }
+  }
+
+  authenticate_any(token, callback)
+}
+
 
 // Returns user info if login info is valid, returns empty list otherwise
 const validateLogin = (request, response) => {
@@ -224,4 +258,4 @@ const updateAdmin = (request, response) => {
   )
 }*/
 
-module.exports = {getHelloWorld, validateLogin, getUserById, createUser, updateUser, deleteUser, signOut}
+module.exports = {getHelloWorld, validateLogin, getUserById, createUser, updateUser, deleteUser, signOut, getETH}

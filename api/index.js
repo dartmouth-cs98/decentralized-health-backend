@@ -32,6 +32,7 @@ app.post('/users', db.createUser)
 app.put('/users/:token/:id', db.updateUser)
 app.delete('/users/:token/:id', db.deleteUser)
 app.delete('/users/login/:token/:id', db.signOut)
+app.get('/search/:token/:email', db.getETH)
 //app.delete('/users/:id', db.deleteAdmin) sql code for this is wrong, and it overloads the delete user endpoint
 //app.put('/users/:id', db.updateAdmin) this overloads the update user endpoint, wont work
 
