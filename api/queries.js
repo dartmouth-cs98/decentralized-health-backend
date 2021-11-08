@@ -37,14 +37,15 @@ const getHelloWorld = (request, response) => {
 const validateLogin = (request, response) => {
     const email = request.params.email
     const password = request.params.password
+    const eth_address = request.params.eth_address
   
-    pool.query('SELECT password_hash FROM users WHERE email=$1', [email], (error, results) => {
+    pool.query('SELECT password_hash FROM users WHERE email=$1 AND eth_address=$2', [email, eth_address], (error, results) => {
       if (error) {
         throw error
       }
       if (results.rows.length > 0) {
         if (passwordHash.verify(password, results.rows[0].password_hash)){
-          pool.query('SELECT * FROM users WHERE email = $1', [email], (error, results) => {
+          pool.query('SELECT * FROM users WHERE email = $1 AND eth_address=$2', [email, eth_address], (error, results) => {
             if (error) {
               throw error
             }
@@ -93,12 +94,12 @@ const getUserById = (request, response) => {
       
 }
 
-// Creates a new user. Needs name, email, password, and admin fields. Returns id and token.
+// Creates a new user. Needs name, email, password, eth_address, and admin fields. Returns id and token.
 const createUser = (request, response) => {
-    const { name, email, password, admin } = request.body
+    const { name, email, password, admin, eth_address } = request.body
     const hashedPassword = passwordHash.generate(password);
     
-    pool.query('INSERT INTO users (name, email, password_hash, is_admin) VALUES ($1, $2, $3, $4) RETURNING id', [name, email, hashedPassword, admin], (error, results) => {
+    pool.query('INSERT INTO users (name, email, password_hash, is_admin, eth_address) VALUES ($1, $2, $3, $4, $5) RETURNING id', [name, email, hashedPassword, admin, eth_address], (error, results) => {
       if (error) {
         throw error
       }
@@ -120,7 +121,7 @@ const createUser = (request, response) => {
 const updateUser = (request, response) => {
     const id = parseInt(request.params.id)
     const token = request.params.token
-    const {name, email, password, admin} = request.body
+    const {name, email, password, admin, eth_address} = request.body
     const hashedPassword = passwordHash.generate(password);
   
     const callback = (authenticated) => {
@@ -129,8 +130,8 @@ const updateUser = (request, response) => {
       }
       else {
         pool.query(
-          'UPDATE users SET name = $1, email = $2, password_hash = $3, is_admin = $4 WHERE id = $5',
-          [name, email, hashedPassword, admin, id],
+          'UPDATE users SET name = $1, email = $2, password_hash = $3, is_admin = $4, eth_address = $5 WHERE id = $6',
+          [name, email, hashedPassword, admin, eth_address, id],
           (error, results) => {
             if (error) {
               throw error

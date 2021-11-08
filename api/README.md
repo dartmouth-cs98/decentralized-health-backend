@@ -19,13 +19,13 @@ The `/hello` GET endpoint responds with a hello world message from the database.
 The `/users/:token/:id` GET endpoint returns information about a user, given the user's ID. Example: `http://localhost:3838/users/8d50a388f44915f44dda067276722595f885aacc01e26d4eb3f7495a8d477a4d787bd4277ab46fb31cb0db4837ca8da1de8987ad03dc158709036e6fd1c84aa9/1`
 
 ### Validate Login
-The `/users/login/:email/:password` GET endpoint will return user information if the provided email and password are correct. It will return an empty list if they are not. Example: `http://localhost:3838/users/login/johnsmithcs98health%40gmail.com/password`
+The `/users/login/:email/:password/:eth_address` GET endpoint will return user information if the provided email and password are correct. It will return an empty list if they are not. Example: `http://localhost:3838/users/login/johnsmithcs98health%40gmail.com/password/1234`
 
 ### Create User
-The `/users` POST endpoint will create a new user with the provided information. The following fields must be included in the body of the request: name, email, password, and admin. Example: `curl --data "name=Elaine&email=elaine@example.com&password=beebus&admin=0" http://localhost:3838/users`
+The `/users` POST endpoint will create a new user with the provided information. The following fields must be included in the body of the request: name, email, password, eth_address, and admin. Example: `curl --data "name=Elaine&email=elaine@example.com&password=beebus&admin=0&eth_address=1234" http://localhost:3838/users`
 
 ### Update User
-The `/users/:token/:id` PUT endpoint will update user information. The following fields must be included in the body of the request: name, email, password, and admin. Example: `curl -X PUT -d "name=Kramer" -d "email=kramer@example.com" -d "admin=0" -d "password=password" http://localhost:3838/users/8d50a388f44915f44dda067276722595f885aacc01e26d4eb3f7495a8d477a4d787bd4277ab46fb31cb0db4837ca8da1de8987ad03dc158709036e6fd1c84aa9/1`
+The `/users/:token/:id` PUT endpoint will update user information. The following fields must be included in the body of the request: name, email, password, eth_address, and admin. Example: `curl -X PUT -d "name=Kramer" -d "email=kramer@example.com" -d "admin=0" -d "password=password" -d "eth_address=1234" http://localhost:3838/users/8d50a388f44915f44dda067276722595f885aacc01e26d4eb3f7495a8d477a4d787bd4277ab46fb31cb0db4837ca8da1de8987ad03dc158709036e6fd1c84aa9/1`
 
 ### Delete User
 The `/users/:token/:id` DELETE endpoint will delete a given user based on ID. Example: `curl -X "DELETE" http://localhost:3838/users/8d50a388f44915f44dda067276722595f885aacc01e26d4eb3f7495a8d477a4d787bd4277ab46fb31cb0db4837ca8da1de8987ad03dc158709036e6fd1c84aa9/1`
