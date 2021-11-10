@@ -1,12 +1,6 @@
 // Code from https://blog.logrocket.com/nodejs-expressjs-postgresql-crud-rest-api-example/ and https://www.npmjs.com/package/password-hash
 // This file contains the endpoints and exports them to index.js
-
-const Pool = require('pg').Pool
-const pool = new Pool({
-  host: 'localhost',
-  database: 'health_db',
-  port: 5432,
-})
+const { pool } = require('./config');
 
 var passwordHash = require('password-hash');
 var crypto = require('crypto');

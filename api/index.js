@@ -1,11 +1,12 @@
 // Code for this file and package.json from https://blog.logrocket.com/nodejs-expressjs-postgresql-crud-rest-api-example/
 // Endpoints exported from queries.js
-
+const cors = require('cors')
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
-const port = 3838
+const port = process.env.PORT || 3838
 
+app.use(cors({origin: '*', optionsSuccessStatus: 200}));
 app.use(bodyParser.json())
 app.use(
   bodyParser.urlencoded({

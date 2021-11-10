@@ -38,10 +38,10 @@ If not, run the following homebrew command to install it.
 
 Next, install the required packages.
 
-    npm install pg pgtools express password-hash
+    npm install pg pgtools express password-hash dotenv
 
 Now, make sure you are in the directory containing the setup_db.js file. Run the following commands.
-
+    export PGDATABASE=health_db PGHOST=localhost PGPORT=5432 PGUSER=$USER PGPASSWORD=password
     node database/setup_db.js
     node database/create_tables.js
 
@@ -70,8 +70,9 @@ Let's boot up our previously set up API and database. To boot up the database, r
 
     brew services start postgresql
 
-**Optional:** If you would like to wipe the local database and start fresh, run the following command.
+**Optional:** If you would like to wipe the local database and start fresh, run the following commands.
 
+    export PGDATABASE=health_db PGHOST=localhost PGPORT=5432 PGUSER=$USER PGPASSWORD=password
     node database/create_tables.js
 
 Now, to boot up the api, run the following command.
