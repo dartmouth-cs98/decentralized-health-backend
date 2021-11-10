@@ -60,6 +60,28 @@ const getETH = (request, response) => {
   authenticate_any(token, callback)
 }
 
+// Returns id given eth address. Any valid token works
+const getIDByETH = (request, response) => {
+  const eth_address = request.params.eth_address
+  const token = request.params.token
+
+  const callback = (authenticated) => {
+    if (!authenticated){
+      response.status(401).send("401 Unauthorized")
+    }
+    else {
+      pool.query('SELECT id FROM users WHERE eth_address = $1', [eth_address], (error, results) => {
+        if (error) {
+          throw error
+        }
+        response.status(200).json(results.rows)
+      })
+    }
+  }
+
+  authenticate_any(token, callback)
+}
+
 
 // Returns user info if login info is valid, returns empty list otherwise
 const validateLogin = (request, response) => {
@@ -217,39 +239,4 @@ const signOut = (request, response) => {
   authenticate(token, id, callback)
 }
 
-/*
-// deletes a users current admin 
-// not in use, overrides an endpoint and is bad sql, see index.js
-const deleteAdmin = (request, response) => {
-  const id = parseInt(request.params.id)
-  const { admin } = request.body
-  pool.query( 'DELETE FROM users SET id = $2, is_admin = $1',
-    [ admin, id],
-    (error, results) => {
-      if (error) {
-        throw error
-      }
-      response.status(200).send(`User modified with ID: ${id}`)
-    })
-}
-
-// updates a users admin 
-// not in use, overrides an endpoint, see index.js
-const updateAdmin = (request, response) => {
-  const id = parseInt(request.params.id)
-  const {admin} = request.body
-  const hashedPassword = passwordHash.generate(password);
-
-  pool.query(
-    'UPDATE users SET is_admin = $1 WHERE id = $2',
-    [admin, id],
-    (error, results) => {
-      if (error) {
-        throw error
-      }
-      response.status(200).send(`User modified with ID: ${id}`)
-    }
-  )
-}*/
-
-module.exports = {getHelloWorld, validateLogin, getUserById, createUser, updateUser, deleteUser, signOut, getETH}
+module.exports = {getHelloWorld, validateLogin, getUserById, createUser, updateUser, deleteUser, signOut, getETH, getIDByETH}
