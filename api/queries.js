@@ -32,7 +32,7 @@ function authenticate_any(token, callback) {
 const getHelloWorld = (request, response) => {
     pool.query('SELECT * FROM hello_world', (error, results) => {
         if (error) {
-            throw error
+          response.status(500).json({ error })
         }
         response.status(200).json(results.rows[0]["message"])
     })
@@ -50,7 +50,7 @@ const getETH = (request, response) => {
     else {
       pool.query('SELECT eth_address FROM users WHERE email = $1', [email], (error, results) => {
         if (error) {
-          throw error
+          response.status(500).json({ error })
         }
         response.status(200).json(results.rows)
       })
@@ -72,7 +72,7 @@ const getIDByETH = (request, response) => {
     else {
       pool.query('SELECT id FROM users WHERE eth_address = $1', [eth_address], (error, results) => {
         if (error) {
-          throw error
+          response.status(500).json({ error })
         }
         response.status(200).json(results.rows)
       })
@@ -91,18 +91,18 @@ const validateLogin = (request, response) => {
   
     pool.query('SELECT password_hash FROM users WHERE email=$1 AND eth_address=$2', [email, eth_address], (error, results) => {
       if (error) {
-        throw error
+        response.status(500).json({ error })
       }
       if (results.rows.length > 0) {
         if (passwordHash.verify(password, results.rows[0].password_hash)){
           pool.query('SELECT * FROM users WHERE email = $1 AND eth_address=$2', [email, eth_address], (error, results) => {
             if (error) {
-              throw error
+              response.status(500).json({ error })
             }
             const token = crypto.randomBytes(64).toString('hex')
             pool.query('INSERT INTO auth (token, id) VALUES ($1, $2)', [token, results.rows[0]["id"]], (error, results) => {
               if (error) {
-                throw error
+                response.status(500).json({ error })
               }
             })
             var json = results.rows
@@ -132,7 +132,7 @@ const getUserById = (request, response) => {
       else {
         pool.query('SELECT * FROM users WHERE id = $1', [id], (error, results) => {
           if (error) {
-            throw error
+            response.status(500).json({ error })
           }
           response.status(200).json(results.rows)
         })
@@ -151,13 +151,13 @@ const createUser = (request, response) => {
     
     pool.query('INSERT INTO users (name, email, password_hash, is_admin, eth_address) VALUES ($1, $2, $3, $4, $5) RETURNING id', [name, email, hashedPassword, admin, eth_address], (error, results) => {
       if (error) {
-        throw error
+        response.status(500).json({ error })
       }
       const id = results.rows[0].id
       const token = crypto.randomBytes(64).toString('hex')
       pool.query('INSERT INTO auth (token, id) VALUES ($1, $2)', [token, id], (error, results) => {
         if (error) {
-          throw error
+          response.status(500).json({ error })
         }
         json = {}
         json['id'] = id
@@ -184,7 +184,7 @@ const updateUser = (request, response) => {
           [name, email, hashedPassword, admin, eth_address, id],
           (error, results) => {
             if (error) {
-              throw error
+              response.status(500).json({ error })
             }
             response.status(200).send(`User modified with ID: ${id}`)
           }
@@ -207,7 +207,7 @@ const deleteUser = (request, response) => {
     else {
       pool.query('DELETE FROM users WHERE id = $1', [id], (error, results) => {
         if (error) {
-          throw error
+          response.status(500).json({ error })
         }
         response.status(200).send(`User deleted with ID: ${id}`)
       })
@@ -229,7 +229,7 @@ const signOut = (request, response) => {
     else {
       pool.query('DELETE FROM auth WHERE token = $1', [token], (error, results) => {
         if (error) {
-          throw error
+          response.status(500).json({ error })
         }
         response.status(200).send(`User signed out with ID: ${id}`)
       })
