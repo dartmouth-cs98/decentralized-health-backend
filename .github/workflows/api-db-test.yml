@@ -6,8 +6,8 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
-      - name: Install postgres
-        run: brew install postgresql node
+      - name: Install node
+        run: brew install node
       - name: Run postgres
         run: brew services start postgresql
       - name: Create postgres user
