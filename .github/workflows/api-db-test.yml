@@ -6,6 +6,15 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
+      - name: Install postgres
+        run: brew install postgresql node
+      - name: Run postgres
+        run: brew services start postgresql
+      - name: Install packages
+        run: npm install pg pgtools express password-hash dotenv
+      - name: Setup database
+        run: export PGDATABASE=health_db PGHOST=localhost PGPORT=5432 PGUSER=$USER PGPASSWORD=password & node database/setup_db.js & node database/create_tables.js
+      - name: Start API
+        run: node api/index.js
+      - name: Run test suite
+        run: cd api-test & npm test
