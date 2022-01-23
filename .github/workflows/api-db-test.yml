@@ -11,7 +11,7 @@ jobs:
       - name: Run postgres
         run: brew services start postgresql
       - name: Create postgres user
-        run: createuser postgres
+        run: createuser postgres -s
       - name: Install packages
         run: npm install pg pgtools express password-hash dotenv
       - name: Setup database
