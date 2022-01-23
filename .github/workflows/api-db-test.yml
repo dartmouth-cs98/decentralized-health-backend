@@ -33,4 +33,4 @@ jobs:
       - name: Start API
         run: nohup node api/index.js &
       - name: Run test suite
-        run: cd api-test & npm test
+        run: cd api-test; npm test
