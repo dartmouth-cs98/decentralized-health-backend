@@ -14,6 +14,12 @@ jobs:
         run: npm install pg pgtools express password-hash dotenv
       - name: Export variables
         run: export PGDATABASE=health_db PGHOST=localhost PGPORT=5432 PGUSER=$USER PGPASSWORD=password
+        env:
+          PGDATABASE: health_db
+          PGHOST: localhost
+          PGPORT: 5432
+          PGUSER: test
+          PGPASSWORD: password
       - name: Setup database
         run: node database/setup_db.js
       - name: Initialize data
