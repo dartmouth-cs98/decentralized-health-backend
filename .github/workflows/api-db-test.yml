@@ -15,15 +15,13 @@ jobs:
       - name: Install packages
         run: npm install pg pgtools express password-hash dotenv
       - name: Setup database
-        run: node database/setup_db.js
+        run: node database/setup_db.js & node database/create_tables.js
         env:
           PGDATABASE: health_db
           PGHOST: localhost
           PGPORT: 5432
           PGUSER: postgres
           PGPASSWORD: postgres
-      - name: Initialize data
-        run: node database/create_tables.js
       - name: Start API
         run: node api/index.js
       - name: Run test suite
