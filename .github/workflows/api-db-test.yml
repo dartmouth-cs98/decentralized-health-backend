@@ -10,10 +10,10 @@ jobs:
         run: brew install node
       - name: Run postgres
         run: brew services start postgresql
-      - name: Create postgres user
-        run: createuser postgres -s
       - name: Install packages
         run: npm install pg pgtools express password-hash dotenv
+      - name: Create postgres user
+        run: createuser postgres -s
       - name: Setup database
         run: node database/setup_db.js
         env:
