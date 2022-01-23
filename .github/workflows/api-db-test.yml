@@ -12,8 +12,12 @@ jobs:
         run: brew services start postgresql
       - name: Install packages
         run: npm install pg pgtools express password-hash dotenv
+      - name: Export variables
+        run: export PGDATABASE=health_db PGHOST=localhost PGPORT=5432 PGUSER=$USER PGPASSWORD=password
       - name: Setup database
-        run: export PGDATABASE=health_db PGHOST=localhost PGPORT=5432 PGUSER=$USER PGPASSWORD=password node database/setup_db.js & node database/create_tables.js
+        run: node database/setup_db.js
+      - name: Initialize data
+        run: node database/create_tables.js
       - name: Start API
         run: node api/index.js
       - name: Run test suite
