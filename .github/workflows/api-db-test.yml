@@ -1,23 +1,17 @@
 name: API & Database Testing Action
 on: [push, pull_request]
 jobs:
-  container-job:
-    runs-on: ubuntu-latest
-    container: node:10.18-jessie
-
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_PASSWORD: postgres
-
+  build:
+    runs-on: macos-latest
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
-      - name: Install brew
-        run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-      - name: Install node
-        run: brew install node
+      - name: Install postgres
+        run: brew install postgresql node
+      - name: Run postgres
+        run: brew services start postgresql
+      - name: Create postgres user
+        run: createuser postgres
       - name: Install packages
         run: npm install pg pgtools express password-hash dotenv
       - name: Setup database
