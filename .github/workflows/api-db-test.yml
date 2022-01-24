@@ -14,23 +14,15 @@ jobs:
         run: npm install pg pgtools express password-hash dotenv
       - name: Create postgres user
         run: createuser postgres -s
-      - name: Setup database
+      - name: Setup Database & Start API
         run: node database/setup_db.js
-        env:
-          PGDATABASE: health_db
-          PGHOST: localhost
-          PGPORT: 5432
-          PGUSER: postgres
-          PGPASSWORD: postgres
-      - name: Initialize data
         run: node database/create_tables.js
+        run: node api/index.js </dev/null &>/dev/null &
         env:
           PGDATABASE: health_db
           PGHOST: localhost
           PGPORT: 5432
           PGUSER: postgres
           PGPASSWORD: postgres
-      - name: Start API
-        run: nohup node api/index.js &
       - name: Run test suite
         run: cd api-test; npm test
