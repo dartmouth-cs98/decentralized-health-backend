@@ -91,6 +91,11 @@ Once you are done working with the API and database, terminate the node command 
 Follow this video tutorial for further instructions:  
 https://www.youtube.com/watch?v=BLH3s5eTL4Y&t=245s.
 
+## Testing
+Once the service is up and running, you can run the test suite to ensure proper functionality. To run the test suite, simply navigate to the `api-test` directory and run `npm test`. These tests will only pass if the test user has not been altered. To ensure this is the case, it is recommended to run `node database/create_tables.js` before running the test suite.  
+  
+This test suite is run automatically upon pushing code to github or initiating a pull request. The GitHub Actions workflow can be viewed or adjusted at `.github/workflows/api-db-test.yml`.
+
 ## Authors
 
 Scott Crawshaw  
