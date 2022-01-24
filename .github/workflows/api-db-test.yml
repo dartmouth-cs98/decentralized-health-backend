@@ -1,0 +1,26 @@
+name: API & Database Testing Action
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Install node
+        run: brew install node
+      - name: Run postgres
+        run: brew services start postgresql
+      - name: Install packages
+        run: npm install pg pgtools express password-hash dotenv
+      - name: Create postgres user
+        run: createuser postgres -s
+      - name: Setup Database & Start API
+        run: node database/setup_db.js; node database/create_tables.js; node api/index.js </dev/null &>/dev/null &
+        env:
+          PGDATABASE: health_db
+          PGHOST: localhost
+          PGPORT: 5432
+          PGUSER: postgres
+          PGPASSWORD: postgres
+      - name: Run test suite
+        run: cd api-test; npm test
