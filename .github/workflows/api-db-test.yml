@@ -15,9 +15,7 @@ jobs:
       - name: Create postgres user
         run: createuser postgres -s
       - name: Setup Database & Start API
-        run: node database/setup_db.js
-        run: node database/create_tables.js
-        run: node api/index.js </dev/null &>/dev/null &
+        run: node database/setup_db.js; node database/create_tables.js; node api/index.js </dev/null &>/dev/null &
         env:
           PGDATABASE: health_db
           PGHOST: localhost
