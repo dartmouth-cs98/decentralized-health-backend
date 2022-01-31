@@ -18,18 +18,18 @@ const configString = isProduction ? process.env.DATABASE_URL : connectionString
 console.log(`PG DATABASE IS: ${process.env.PGDATABASE}`)
 console.log(`DATABASE_URL IS: ${process.env.DATABASE_URL}`)
 
-try {
-  pgtools.createdb(configString, process.env.PGDATABASE, function(err, res) {
-    if (err) {
-      console.log('error in pgtools createdb');
-      console.error(err);
-      process.exit(-1);
-    }
-    console.log(res);
-  });
-} catch (error) {
-  console.log(error)
-}
+// try {
+//   pgtools.createdb(configString, process.env.PGDATABASE, function(err, res) {
+//     if (err) {
+//       console.log('error in pgtools createdb');
+//       console.error(err);
+//       process.exit(-1);
+//     }
+//     console.log(res);
+//   });
+// } catch (error) {
+//   console.log(error)
+// }
 
 
 console.log('finished setup')
