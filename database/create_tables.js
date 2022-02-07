@@ -61,19 +61,19 @@ const execute = async (query) => {
 // });
 
 // hello_world table
-execute(create_hello).then(result => {
-    if (result) {
-        console.log('hello_world table created.');
-    }
+// execute(create_hello).then(result => {
+//     if (result) {
+//         console.log('hello_world table created.');
+//     }
 
-    // execute(insert_hello).then(result => {
-    //     if (result) {
-    //         console.log('Test message added to hello_world table.');
-    //     }
-    // });
-}).catch(error => {
-    console.log(`error creating hello_world table: ${error}`)
-});
+//     execute(insert_hello).then(result => {
+//         if (result) {
+//             console.log('Test message added to hello_world table.');
+//         }
+//     });
+// }).catch(error => {
+//     console.log(`error creating hello_world table: ${error}`)
+// });
 
 // users table
 execute(create_users).then(result => {
