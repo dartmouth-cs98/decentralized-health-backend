@@ -32,7 +32,6 @@ console.log('after listening to port')
 const db = require('./queries')
 
 // Endpoints
-app.get('/hello', db.getHelloWorld)
 app.get('/users/:token/:id', db.getUserById)
 app.get('/users/login/:email/:password/:eth_address', db.validateLogin)
 app.post('/users', db.createUser)

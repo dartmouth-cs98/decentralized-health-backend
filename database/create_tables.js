@@ -8,6 +8,7 @@ dotenv.config({silent: true});
 const { Client } = require('pg');
 
 const isProduction = process.env.NODE_ENV === 'production';
+console.log(`NODE ENV is ${process.env.NODE_ENV}`);
 const client = new Client(
     {
         user: process.env.PGUSER,
@@ -15,7 +16,7 @@ const client = new Client(
         database: process.env.PGDATABASE,
         password: process.env.PGPASSWORD,
         port: process.env.PGPORT,
-        ssl: isProduction? { rejectUnauthorized: false }: false
+        ssl: isProduction? { rejectUnauthorized: false }: true
     }
 );
 
@@ -32,28 +33,38 @@ client
 const create_users = `CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, name TEXT NOT NULL, email TEXT NOT NULL UNIQUE, password_hash TEXT NOT NULL, is_admin BOOLEAN NOT NULL, eth_address TEXT NOT NULL);`
 const create_auth = `CREATE TABLE IF NOT EXISTS auth (token TEXT PRIMARY KEY, id integer REFERENCES users ON DELETE CASCADE, timestamp TIMESTAMPTZ NOT NULL DEFAULT (NOW() + interval '336 hours'));`
 
-const execute = async (query) => {
-    try {
-        await client.query(query);  // sends queries
-        return true;
-    } catch (error) {
-        console.error(error.stack);
-        return false;
-    }
-};
+// const execute = async (query) => {
+//     try {
+//         await client.query(query);  // sends queries
+//         return true;
+//     } catch (error) {
+//         console.error(error.stack);
+//         return false;
+//     }
+// };
 
 // users table
-execute(create_users).then(result => {
-    if (result) {
-        console.log('users table created.');
-    }
-});
+client.query(create_users)
+    .then(() => {console.log('users table created')})
+    .catch((error) => console.log(error))
 
 // auth table
-execute(create_auth).then(result => {
-    if (result) {
-        console.log('auth table created.');
-    }
-});
+client.query(create_auth)
+    .then(() => {
+        console.log('auth table created')
+        client.end();
+    })
+    .catch((error) => console.log(error))
 
-console.log('finished create'); 
+// execute(create_users).then(result => {
+//     if (result) {
+//         console.log('users table created.');
+//     }
+// });
+
+// auth table
+// execute(create_auth).then(result => {
+//     if (result) {
+//         console.log('auth table created.');
+//     }
+// });

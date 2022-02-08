@@ -29,14 +29,14 @@ function authenticate_any(token, callback) {
 }
 
 
-const getHelloWorld = (request, response) => {
-    pool.query('SELECT * FROM hello_world', (error, results) => {
-        if (error) {
-          response.status(500).json({ error })
-        }
-        response.status(200).json(results.rows[0]["message"])
-    })
-}
+// const getHelloWorld = (request, response) => {
+//     pool.query('SELECT * FROM hello_world', (error, results) => {
+//         if (error) {
+//           response.status(500).json({ error })
+//         }
+//         response.status(200).json(results.rows[0]["message"])
+//     })
+// }
 
 // Returns eth address given email. Any valid token works
 const getETH = (request, response) => {
@@ -153,17 +153,23 @@ const createUser = (request, response) => {
       if (error) {
         response.status(500).json({ error })
       }
-      const id = results.rows[0].id
-      const token = crypto.randomBytes(64).toString('hex')
-      pool.query('INSERT INTO auth (token, id) VALUES ($1, $2)', [token, id], (error, results) => {
-        if (error) {
-          response.status(500).json({ error })
-        }
-        json = {}
-        json['id'] = id
-        json['token'] = token
-        response.status(201).send(json)
-      })
+
+      try {
+        const id = results.rows[0].id
+        const token = crypto.randomBytes(64).toString('hex')
+        pool.query('INSERT INTO auth (token, id) VALUES ($1, $2)', [token, id], (error, results) => {
+          if (error) {
+            response.status(500).json({ error })
+          }
+          json = {}
+          json['id'] = id
+          json['token'] = token
+          response.status(201).send(json)
+        })
+      } catch (err) {
+        response.status(500).json({ err })
+      }
+      
     })
 }
 
@@ -239,4 +245,4 @@ const signOut = (request, response) => {
   authenticate(token, id, callback)
 }
 
-module.exports = {getHelloWorld, validateLogin, getUserById, createUser, updateUser, deleteUser, signOut, getETH, getIDByETH}
+module.exports = {validateLogin, getUserById, createUser, updateUser, deleteUser, signOut, getETH, getIDByETH}
