@@ -15,6 +15,7 @@ const configString = isProduction ? process.env.DATABASE_URL : connectionString
 
 // create database named health_db
 // what is this???? -> parse url?
+console.log(`PORT IS: ${process.env.PORT}`)
 console.log(`PG DATABASE IS: ${process.env.PGDATABASE}`)
 console.log(`DATABASE_URL IS: ${process.env.DATABASE_URL}`)
 
