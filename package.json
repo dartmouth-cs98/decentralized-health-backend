@@ -6,7 +6,7 @@
     "license": "MIT",
     "scripts": {
         "dev": "node database/setup_db.js; node database/create_tables.js; nodemon api/index.js",
-        "start": "node database/setup_db.js; node database/create_tables.js; node api/index.js"
+        "start": "node database/setup_db.js; node api/index.js; node database/create_tables.js"
     },
     "dependencies": {
         "cors": "^2.8.5",
