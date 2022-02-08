@@ -32,7 +32,7 @@ function authenticate_any(token, callback) {
 const getHelloWorld = (request, response) => {
     pool.query('SELECT * FROM hello_world', (error, results) => {
         if (error) {
-            throw error
+          response.status(500).json({ error })
         }
         response.status(200).json(results.rows[0]["message"])
     })
@@ -50,7 +50,29 @@ const getETH = (request, response) => {
     else {
       pool.query('SELECT eth_address FROM users WHERE email = $1', [email], (error, results) => {
         if (error) {
-          throw error
+          response.status(500).json({ error })
+        }
+        response.status(200).json(results.rows)
+      })
+    }
+  }
+
+  authenticate_any(token, callback)
+}
+
+// Returns id given eth address. Any valid token works
+const getIDByETH = (request, response) => {
+  const eth_address = request.params.eth_address
+  const token = request.params.token
+
+  const callback = (authenticated) => {
+    if (!authenticated){
+      response.status(401).send("401 Unauthorized")
+    }
+    else {
+      pool.query('SELECT id FROM users WHERE eth_address = $1', [eth_address], (error, results) => {
+        if (error) {
+          response.status(500).json({ error })
         }
         response.status(200).json(results.rows)
       })
@@ -69,18 +91,18 @@ const validateLogin = (request, response) => {
   
     pool.query('SELECT password_hash FROM users WHERE email=$1 AND eth_address=$2', [email, eth_address], (error, results) => {
       if (error) {
-        throw error
+        response.status(500).json({ error })
       }
       if (results.rows.length > 0) {
         if (passwordHash.verify(password, results.rows[0].password_hash)){
           pool.query('SELECT * FROM users WHERE email = $1 AND eth_address=$2', [email, eth_address], (error, results) => {
             if (error) {
-              throw error
+              response.status(500).json({ error })
             }
             const token = crypto.randomBytes(64).toString('hex')
             pool.query('INSERT INTO auth (token, id) VALUES ($1, $2)', [token, results.rows[0]["id"]], (error, results) => {
               if (error) {
-                throw error
+                response.status(500).json({ error })
               }
             })
             var json = results.rows
@@ -110,7 +132,7 @@ const getUserById = (request, response) => {
       else {
         pool.query('SELECT * FROM users WHERE id = $1', [id], (error, results) => {
           if (error) {
-            throw error
+            response.status(500).json({ error })
           }
           response.status(200).json(results.rows)
         })
@@ -129,13 +151,13 @@ const createUser = (request, response) => {
     
     pool.query('INSERT INTO users (name, email, password_hash, is_admin, eth_address) VALUES ($1, $2, $3, $4, $5) RETURNING id', [name, email, hashedPassword, admin, eth_address], (error, results) => {
       if (error) {
-        throw error
+        response.status(500).json({ error })
       }
       const id = results.rows[0].id
       const token = crypto.randomBytes(64).toString('hex')
       pool.query('INSERT INTO auth (token, id) VALUES ($1, $2)', [token, id], (error, results) => {
         if (error) {
-          throw error
+          response.status(500).json({ error })
         }
         json = {}
         json['id'] = id
@@ -162,7 +184,7 @@ const updateUser = (request, response) => {
           [name, email, hashedPassword, admin, eth_address, id],
           (error, results) => {
             if (error) {
-              throw error
+              response.status(500).json({ error })
             }
             response.status(200).send(`User modified with ID: ${id}`)
           }
@@ -185,7 +207,7 @@ const deleteUser = (request, response) => {
     else {
       pool.query('DELETE FROM users WHERE id = $1', [id], (error, results) => {
         if (error) {
-          throw error
+          response.status(500).json({ error })
         }
         response.status(200).send(`User deleted with ID: ${id}`)
       })
@@ -207,7 +229,7 @@ const signOut = (request, response) => {
     else {
       pool.query('DELETE FROM auth WHERE token = $1', [token], (error, results) => {
         if (error) {
-          throw error
+          response.status(500).json({ error })
         }
         response.status(200).send(`User signed out with ID: ${id}`)
       })
@@ -217,39 +239,4 @@ const signOut = (request, response) => {
   authenticate(token, id, callback)
 }
 
-/*
-// deletes a users current admin 
-// not in use, overrides an endpoint and is bad sql, see index.js
-const deleteAdmin = (request, response) => {
-  const id = parseInt(request.params.id)
-  const { admin } = request.body
-  pool.query( 'DELETE FROM users SET id = $2, is_admin = $1',
-    [ admin, id],
-    (error, results) => {
-      if (error) {
-        throw error
-      }
-      response.status(200).send(`User modified with ID: ${id}`)
-    })
-}
-
-// updates a users admin 
-// not in use, overrides an endpoint, see index.js
-const updateAdmin = (request, response) => {
-  const id = parseInt(request.params.id)
-  const {admin} = request.body
-  const hashedPassword = passwordHash.generate(password);
-
-  pool.query(
-    'UPDATE users SET is_admin = $1 WHERE id = $2',
-    [admin, id],
-    (error, results) => {
-      if (error) {
-        throw error
-      }
-      response.status(200).send(`User modified with ID: ${id}`)
-    }
-  )
-}*/
-
-module.exports = {getHelloWorld, validateLogin, getUserById, createUser, updateUser, deleteUser, signOut, getETH}
+module.exports = {getHelloWorld, validateLogin, getUserById, createUser, updateUser, deleteUser, signOut, getETH, getIDByETH}
