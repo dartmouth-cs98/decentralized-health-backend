@@ -19,9 +19,13 @@ app.get('/', (request, response) => {
 })
 
 
+console.log(
+  'before listening to port'
+)
 app.listen(port, () => {
     console.log(`App running on port ${port}.`)
 })
+console.log('after listening to port')
 
 const db = require('./queries')
 
