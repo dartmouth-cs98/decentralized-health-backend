@@ -19,10 +19,11 @@ const client = new Client(
     }
 );
 
-try {
-    await client.connect();
-} catch (error) {
-    console.log(`client failed to connect with error: ${error}`)
-}
+client
+    .connect()
+    .then(() => {console.log('client connected')})
+    .catch((error) => {
+        console.log(`client failed to connect with error: ${error}`)
+    });
 
 console.log('finished create');
