@@ -1,5 +1,7 @@
 // Code for this file and package.json from https://blog.logrocket.com/nodejs-expressjs-postgresql-crud-rest-api-example/
 // Endpoints exported from queries.js
+console.log('top of file')
+
 const cors = require('cors')
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -19,14 +21,17 @@ app.get('/', (request, response) => {
 })
 
 
+console.log(
+  'before listening to port'
+)
 app.listen(port, () => {
     console.log(`App running on port ${port}.`)
 })
+console.log('after listening to port')
 
 const db = require('./queries')
 
 // Endpoints
-app.get('/hello', db.getHelloWorld)
 app.get('/users/:token/:id', db.getUserById)
 app.get('/users/login/:email/:password/:eth_address', db.validateLogin)
 app.post('/users', db.createUser)
