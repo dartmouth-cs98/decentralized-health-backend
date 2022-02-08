@@ -20,7 +20,7 @@ const client = new Client(
 );
 
 try {
-    client.connect();
+    await client.connect();
 } catch (error) {
     console.log(`client failed to connect with error: ${error}`)
 }
